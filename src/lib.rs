@@ -19,12 +19,13 @@ pub fn read_it_all() -> Vec<Vec<String>> {
     let path = Path::new("./input/test.xlsx");
     let book = umya_spreadsheet::reader::xlsx::read(path).unwrap();
 
-    // read everything until cell (10, 10)
+    let max_col_and_row: (u32, u32) = book.get_sheet_by_name("Sheet1").unwrap().get_highest_column_and_row();
+
     let mut container: Vec<Vec<String>> = Vec::new();
-    for i in 1..=10 {
+    for i in 1..=max_col_and_row.1 {
         let mut line_storage: Vec<String> = Vec::new();
-        for j in 1..=10 {
-            let val = book.get_sheet_by_name("Sheet1").unwrap().get_value_by_column_and_row(&i, &j);
+        for j in 1..=max_col_and_row.0 {
+            let val = book.get_sheet_by_name("Sheet1").unwrap().get_value_by_column_and_row(&j, &i);
             line_storage.push(val);
         }
         container.push(line_storage);
